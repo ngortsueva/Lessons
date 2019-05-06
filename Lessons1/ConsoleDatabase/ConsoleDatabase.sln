@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDatabase", "ConsoleDatabase\ConsoleDatabase.csproj", "{BB2F55A7-3C8F-4A52-93D1-BBA627AE0544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLotDAL", "AutoLotDAL\AutoLotDAL.csproj", "{0C5FA27E-16F5-438A-AA6B-BEC096DF187C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLotForm", "AutoLotForm\AutoLotForm.csproj", "{B0E9919F-B045-40A0-AB05-8A5D8DE60347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLotForm2", "AutoLotForm2\AutoLotForm2.csproj", "{7BB59796-D7DA-42F9-961F-05AE5250745F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLotGridViewForm", "AutoLotGridViewForm\AutoLotGridViewForm.csproj", "{DA524601-1156-4D1B-8F01-6BD464ACD855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLotDataSetDLL", "AutoLotDataSetDLL\AutoLotDataSetDLL.csproj", "{CF163109-D0A1-4B00-9CB0-34C4FB0A00ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEntity", "ConsoleEntity\ConsoleEntity.csproj", "{FBC175FF-BF0B-496D-ABEC-3B4F5D6CD118}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB2F55A7-3C8F-4A52-93D1-BBA627AE0544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB2F55A7-3C8F-4A52-93D1-BBA627AE0544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB2F55A7-3C8F-4A52-93D1-BBA627AE0544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB2F55A7-3C8F-4A52-93D1-BBA627AE0544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C5FA27E-16F5-438A-AA6B-BEC096DF187C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C5FA27E-16F5-438A-AA6B-BEC096DF187C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C5FA27E-16F5-438A-AA6B-BEC096DF187C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C5FA27E-16F5-438A-AA6B-BEC096DF187C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E9919F-B045-40A0-AB05-8A5D8DE60347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E9919F-B045-40A0-AB05-8A5D8DE60347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E9919F-B045-40A0-AB05-8A5D8DE60347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E9919F-B045-40A0-AB05-8A5D8DE60347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB59796-D7DA-42F9-961F-05AE5250745F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB59796-D7DA-42F9-961F-05AE5250745F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB59796-D7DA-42F9-961F-05AE5250745F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB59796-D7DA-42F9-961F-05AE5250745F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA524601-1156-4D1B-8F01-6BD464ACD855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA524601-1156-4D1B-8F01-6BD464ACD855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA524601-1156-4D1B-8F01-6BD464ACD855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA524601-1156-4D1B-8F01-6BD464ACD855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF163109-D0A1-4B00-9CB0-34C4FB0A00ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF163109-D0A1-4B00-9CB0-34C4FB0A00ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF163109-D0A1-4B00-9CB0-34C4FB0A00ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF163109-D0A1-4B00-9CB0-34C4FB0A00ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC175FF-BF0B-496D-ABEC-3B4F5D6CD118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC175FF-BF0B-496D-ABEC-3B4F5D6CD118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC175FF-BF0B-496D-ABEC-3B4F5D6CD118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC175FF-BF0B-496D-ABEC-3B4F5D6CD118}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

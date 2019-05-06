@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="NorthwindUwp.CategoriesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NorthwindUwp"
+    xmlns:nw="using:NorthwindEntitiesLib" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView x:Name="ForegroundElement" ItemsSource="{x:Bind ViewModel.Categories}">
+            <ListView.Header>
+                <Grid Padding="20" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                               FontSize="24"
+                               VerticalAlignment="Center"
+                               Margin="12,0"
+                               Text="Categories"/>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="nw:Category">
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>                            
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
+                                    Padding="10" Grid.Column="1">
+                            <TextBlock Text="{x:Bind CategoryName}" FontSize="20"/>
+                            <TextBlock Text="{x:Bind Description}" FontSize="16"/>
+                        </StackPanel>
+                    </Grid>                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

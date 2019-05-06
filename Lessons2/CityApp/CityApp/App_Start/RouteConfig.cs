@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace CityApp
+{
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: null,
+                url: "{Country}/Calendar/{calendarcode}",
+                defaults: new { controller = "Country", action = "Calendar" }
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "{Country}/Holidays/{countrycode}",
+                defaults: new { controller = "Country", action = "Holidays" }
+            );
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Home", action = "Index" }
+            );
+        }
+    }
+}

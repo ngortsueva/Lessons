@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoLotGridViewForm.AutoLotDataSet">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="AutoLotGridViewForm.AutoLotDataSet.InventoryRowChangeEventHandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+      <Class Name="AutoLotGridViewForm.AutoLotDataSet.InventoryDataTable" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="AutoLotGridViewForm.AutoLotDataSet.InventoryRow" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="AutoLotGridViewForm.AutoLotDataSet.InventoryRowChangeEvent" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAAAAJABAACQAAAAAgCQBgAAAAAAgEAFBA=</HashCode>
+      <FileName>AutoLotDataSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.FormMain" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAAAAIAAACIAEACAEgAAQgAAAACCAAABAA=</HashCode>
+      <FileName>FormMain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.Program" Collapsed="true">
+    <Position X="3.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.AutoLotDataSetTableAdapters.InventoryTableAdapter" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EASAAGAAEAAAAAcAIAAAAAAAACEICAAAAAAAAAAABBA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.AutoLotDataSetTableAdapters.TableAdapterManager" Collapsed="true">
+    <Position X="3.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAACAAAABABAEBAAAAMAAgAAACgACAAAQABAAABAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.Properties.Resources" Collapsed="true">
+    <Position X="3.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoLotGridViewForm.Properties.Settings" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAgAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

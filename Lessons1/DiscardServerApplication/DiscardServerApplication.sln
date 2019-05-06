@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscardServerApplication", "DiscardServerApplication\DiscardServerApplication.csproj", "{75E79FB2-13DF-4299-B1B1-3AA3F78D7F6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75E79FB2-13DF-4299-B1B1-3AA3F78D7F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E79FB2-13DF-4299-B1B1-3AA3F78D7F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E79FB2-13DF-4299-B1B1-3AA3F78D7F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E79FB2-13DF-4299-B1B1-3AA3F78D7F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
