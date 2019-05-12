@@ -1,7 +1,8 @@
 import { Component, Input, ViewChildren ,QueryList } from "@angular/core";
-import { Model } from "./repository.model";
-import { Product } from "./product.model";
-import { PaCellColor } from "./cellColor.directive";
+import { Model } from "../model/repository.model";
+import { Product } from "../model/product.model";
+import { PaCellColor } from "../common/cellColor.directive";
+import { DiscountService } from "../common/discount.service";
 
 @Component({
     selector: "paProductTable",
@@ -9,8 +10,10 @@ import { PaCellColor } from "./cellColor.directive";
 })
 export class ProductTableComponent {
 
-    @Input("model")
-    dataModel: Model;
+    //@Input("model")
+    //dataModel: Model;
+
+    constructor(private dataModel: Model){}
 
     getProduct(key: number): Product {
         return this.dataModel.getProduct(key);
@@ -23,4 +26,8 @@ export class ProductTableComponent {
     deleteProduct(key: number){
         this.dataModel.deleteProduct(key);
     }
+
+    dateObject: Date = new Date(2020, 1, 20);
+    dateString: string = "2020-02-20T00:00:00.000Z";
+    dateNumber: number = 1582156800000;
 }
