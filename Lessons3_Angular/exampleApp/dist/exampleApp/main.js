@@ -85,6 +85,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _table_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./table.component */ "./src/app/core/table.component.ts");
 /* harmony import */ var _form_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./form.component */ "./src/app/core/form.component.ts");
 /* harmony import */ var _sharedState_model__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sharedState.model */ "./src/app/core/sharedState.model.ts");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+
 
 
 
@@ -101,7 +103,7 @@ var CoreModule = /** @class */ (function () {
             imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _model_model_module__WEBPACK_IMPORTED_MODULE_4__["ModelModule"]],
             declarations: [_table_component__WEBPACK_IMPORTED_MODULE_5__["TableComponent"], _form_component__WEBPACK_IMPORTED_MODULE_6__["FormComponent"]],
             exports: [_model_model_module__WEBPACK_IMPORTED_MODULE_4__["ModelModule"], _table_component__WEBPACK_IMPORTED_MODULE_5__["TableComponent"], _form_component__WEBPACK_IMPORTED_MODULE_6__["FormComponent"]],
-            providers: [_sharedState_model__WEBPACK_IMPORTED_MODULE_7__["SharedState"]]
+            providers: [{ provide: _sharedState_model__WEBPACK_IMPORTED_MODULE_7__["SHARED_STATE"], useValue: new rxjs_Subject__WEBPACK_IMPORTED_MODULE_8__["Subject"]() }]
         })
     ], CoreModule);
     return CoreModule;
@@ -148,24 +150,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_product_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/product.model */ "./src/app/model/product.model.ts");
 /* harmony import */ var _model_repository_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../model/repository.model */ "./src/app/model/repository.model.ts");
 /* harmony import */ var _sharedState_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sharedState.model */ "./src/app/core/sharedState.model.ts");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs-compat/_esm5/Observable.js");
+
 
 
 
 
 
 var FormComponent = /** @class */ (function () {
-    function FormComponent(model, state) {
+    function FormComponent(model, stateEvents) {
+        var _this = this;
         this.model = model;
-        this.state = state;
+        this.stateEvents = stateEvents;
         this.product = new _model_product_model__WEBPACK_IMPORTED_MODULE_2__["Product"]();
+        this.editing = false;
+        stateEvents.subscribe(function (update) {
+            _this.product = new _model_product_model__WEBPACK_IMPORTED_MODULE_2__["Product"]();
+            if (update.id != undefined) {
+                Object.assign(_this.product, _this.model.getProduct(update.id));
+            }
+            _this.editing = update.mode == _sharedState_model__WEBPACK_IMPORTED_MODULE_4__["MODES"].EDIT;
+        });
     }
-    Object.defineProperty(FormComponent.prototype, "editing", {
-        get: function () {
-            return this.state.mode == _sharedState_model__WEBPACK_IMPORTED_MODULE_4__["MODES"].EDIT;
-        },
-        enumerable: true,
-        configurable: true
-    });
     FormComponent.prototype.submitForm = function (form) {
         if (form.valid) {
             this.model.saveProduct(this.product);
@@ -182,8 +188,9 @@ var FormComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./form.component.html */ "./src/app/core/form.component.html"),
             styles: [__webpack_require__(/*! ./form.component.css */ "./src/app/core/form.component.css")]
         }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_sharedState_model__WEBPACK_IMPORTED_MODULE_4__["SHARED_STATE"])),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_model_repository_model__WEBPACK_IMPORTED_MODULE_3__["Model"],
-            _sharedState_model__WEBPACK_IMPORTED_MODULE_4__["SharedState"]])
+            rxjs_Observable__WEBPACK_IMPORTED_MODULE_5__["Observable"]])
     ], FormComponent);
     return FormComponent;
 }());
@@ -196,25 +203,30 @@ var FormComponent = /** @class */ (function () {
 /*!*******************************************!*\
   !*** ./src/app/core/sharedState.model.ts ***!
   \*******************************************/
-/*! exports provided: MODES, SharedState */
+/*! exports provided: MODES, SharedState, SHARED_STATE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MODES", function() { return MODES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedState", function() { return SharedState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHARED_STATE", function() { return SHARED_STATE; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
 var MODES;
 (function (MODES) {
     MODES[MODES["CREATE"] = 0] = "CREATE";
     MODES[MODES["EDIT"] = 1] = "EDIT";
 })(MODES || (MODES = {}));
 var SharedState = /** @class */ (function () {
-    function SharedState() {
-        this.mode = MODES.EDIT;
+    function SharedState(mode, id) {
+        this.mode = mode;
+        this.id = id;
     }
     return SharedState;
 }());
 
+var SHARED_STATE = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]("shared_state");
 
 
 /***/ }),
@@ -249,9 +261,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var TableComponent = /** @class */ (function () {
-    function TableComponent(model, state) {
+    function TableComponent(model, observer) {
         this.model = model;
-        this.state = state;
+        this.observer = observer;
     }
     TableComponent.prototype.getProduct = function (key) {
         return this.model.getProduct(key);
@@ -263,19 +275,18 @@ var TableComponent = /** @class */ (function () {
         this.model.deleteProduct(key);
     };
     TableComponent.prototype.editProduct = function (key) {
-        this.state.id = key;
-        this.state.mode = _sharedState_model__WEBPACK_IMPORTED_MODULE_3__["MODES"].EDIT;
+        this.observer.next(new _sharedState_model__WEBPACK_IMPORTED_MODULE_3__["SharedState"](_sharedState_model__WEBPACK_IMPORTED_MODULE_3__["MODES"].EDIT, key));
     };
     TableComponent.prototype.createProduct = function () {
-        this.state.id = undefined;
-        this.state.mode = _sharedState_model__WEBPACK_IMPORTED_MODULE_3__["MODES"].CREATE;
+        this.observer.next(new _sharedState_model__WEBPACK_IMPORTED_MODULE_3__["SharedState"](_sharedState_model__WEBPACK_IMPORTED_MODULE_3__["MODES"].CREATE));
     };
     TableComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: "paTable",
             template: __webpack_require__(/*! ./table.component.html */ "./src/app/core/table.component.html")
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_model_repository_model__WEBPACK_IMPORTED_MODULE_2__["Model"], _sharedState_model__WEBPACK_IMPORTED_MODULE_3__["SharedState"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_sharedState_model__WEBPACK_IMPORTED_MODULE_3__["SHARED_STATE"])),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_model_repository_model__WEBPACK_IMPORTED_MODULE_2__["Model"], Object])
     ], TableComponent);
     return TableComponent;
 }());
@@ -403,40 +414,6 @@ var MessageService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/model/datasource.model.ts":
-/*!*******************************************!*\
-  !*** ./src/app/model/datasource.model.ts ***!
-  \*******************************************/
-/*! exports provided: StaticDataSource */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StaticDataSource", function() { return StaticDataSource; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _product_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./product.model */ "./src/app/model/product.model.ts");
-
-
-
-var StaticDataSource = /** @class */ (function () {
-    function StaticDataSource() {
-        this.data = new Array(new _product_model__WEBPACK_IMPORTED_MODULE_2__["Product"](1, "Kayak", "Watersports", 275), new _product_model__WEBPACK_IMPORTED_MODULE_2__["Product"](2, "Lifejacket", "Watersports", 48.95), new _product_model__WEBPACK_IMPORTED_MODULE_2__["Product"](3, "Soccer Ball", "Soccer", 19.50), new _product_model__WEBPACK_IMPORTED_MODULE_2__["Product"](4, "Corner Flags", "Soccer", 34.95), new _product_model__WEBPACK_IMPORTED_MODULE_2__["Product"](5, "Thinking Cap", "Chess", 16));
-    }
-    StaticDataSource.prototype.getData = function () {
-        return this.data;
-    };
-    StaticDataSource = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-    ], StaticDataSource);
-    return StaticDataSource;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/model/model.module.ts":
 /*!***************************************!*\
   !*** ./src/app/model/model.module.ts ***!
@@ -449,8 +426,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ModelModule", function() { return ModelModule; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _datasource_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./datasource.model */ "./src/app/model/datasource.model.ts");
-/* harmony import */ var _repository_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./repository.model */ "./src/app/model/repository.model.ts");
+/* harmony import */ var _repository_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./repository.model */ "./src/app/model/repository.model.ts");
+/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
+/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./rest.datasource */ "./src/app/model/rest.datasource.ts");
+
 
 
 
@@ -460,7 +439,10 @@ var ModelModule = /** @class */ (function () {
     }
     ModelModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-            providers: [_repository_model__WEBPACK_IMPORTED_MODULE_3__["Model"], _datasource_model__WEBPACK_IMPORTED_MODULE_2__["StaticDataSource"]]
+            imports: [_angular_http__WEBPACK_IMPORTED_MODULE_3__["HttpModule"]],
+            providers: [_repository_model__WEBPACK_IMPORTED_MODULE_2__["Model"], _rest_datasource__WEBPACK_IMPORTED_MODULE_4__["RestDataSource"],
+                { provide: _rest_datasource__WEBPACK_IMPORTED_MODULE_4__["REST_URL"], useValue: "http://" + location.hostname + ":3500/products" }
+            ]
         })
     ], ModelModule);
     return ModelModule;
@@ -506,7 +488,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Model", function() { return Model; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _datasource_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./datasource.model */ "./src/app/model/datasource.model.ts");
+/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rest.datasource */ "./src/app/model/rest.datasource.ts");
 
 
 
@@ -514,10 +496,13 @@ var Model = /** @class */ (function () {
     function Model(dataSource) {
         var _this = this;
         this.dataSource = dataSource;
+        //private dataSource: SimpleDataSource;
+        this.products = new Array();
         this.locator = function (p, id) { return p.id == id; };
         //this.dataSource = new SimpleDataSource();
-        this.products = new Array();
-        this.dataSource.getData().forEach(function (p) { return _this.products.push(p); });
+        //this.products = new Array<Product>();
+        //this.dataSource.getData().forEach(p => this.products.push(p));
+        this.dataSource.getData().subscribe(function (data) { return _this.products = data; });
     }
     Model.prototype.getProducts = function () {
         return this.products;
@@ -554,9 +539,71 @@ var Model = /** @class */ (function () {
     };
     Model = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_datasource_model__WEBPACK_IMPORTED_MODULE_2__["StaticDataSource"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_rest_datasource__WEBPACK_IMPORTED_MODULE_2__["RestDataSource"]])
     ], Model);
     return Model;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/model/rest.datasource.ts":
+/*!******************************************!*\
+  !*** ./src/app/model/rest.datasource.ts ***!
+  \******************************************/
+/*! exports provided: REST_URL, RestDataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REST_URL", function() { return REST_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RestDataSource", function() { return RestDataSource; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+var REST_URL = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]("rest_url");
+var RestDataSource = /** @class */ (function () {
+    function RestDataSource(http, url) {
+        this.http = http;
+        this.url = url;
+    }
+    RestDataSource.prototype.getData = function () {
+        return this.sendRequest("GET", this.url);
+    };
+    RestDataSource.prototype.saveProduct = function (product) {
+        return this.sendRequest("POST", this.url, product);
+    };
+    RestDataSource.prototype.updateProduct = function (product) {
+        return this.sendRequest("PUT", this.url + "/" + product.id, product);
+    };
+    RestDataSource.prototype.deleteProduct = function (id) {
+        return this.sendRequest("DELETE", this.url + "/" + id);
+    };
+    RestDataSource.prototype.sendRequest = function (verb, url, body) {
+        var myHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        myHeaders = myHeaders.set("Access-Key", "<secret>");
+        myHeaders = myHeaders.set("Application-Names", ["exampleApp", "proAngular"]);
+        return this.http.request(verb, url, {
+            body: body,
+            headers: myHeaders
+        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])("Network Error: " + error.statusText + " (" + error.status + ")");
+        }));
+    };
+    RestDataSource = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(REST_URL)),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], String])
+    ], RestDataSource);
+    return RestDataSource;
 }());
 
 

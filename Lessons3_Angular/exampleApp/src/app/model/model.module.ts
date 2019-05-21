@@ -1,10 +1,13 @@
 import { NgModule } from "@angular/core";
-import { StaticDataSource } from "./datasource.model";
+//import { StaticDataSource } from "./datasource.model";
 import { Model } from "./repository.model";
-import { HttpModule } from "@angular/http";
+import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
+import { RestDataSource, REST_URL } from "./rest.datasource";
 
 @NgModule({
-    imports: [HttpModule],
-    providers: [Model, StaticDataSource]
+    imports: [HttpClientModule, HttpClientJsonpModule],
+    providers: [Model, RestDataSource,
+        { provide: REST_URL, useValue: `http://${location.hostname}:3500/products` }
+    ]
 })
 export class ModelModule { }
