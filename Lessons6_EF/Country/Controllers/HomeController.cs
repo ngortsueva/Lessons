@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Country.Models;
+using CountryWeb.Models;
 
-namespace Country.Controllers
+namespace CountryWeb.Controllers
 {
     public class HomeController : Controller
     {

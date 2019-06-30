@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using CountryWeb.Domain;
+using CountryWeb.Models;
 
-namespace Country
+namespace CountryWeb
 {
     public class Startup
     {
@@ -31,6 +34,10 @@ namespace Country
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<CountryDb>(options =>
+                options.UseSqlServer(@"Data Source=GNOME;Initial Catalog = CountryDb; Persist Security Info = True;
+                                       User ID = sa;
+                                       Password = '12345';"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
