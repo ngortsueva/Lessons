@@ -1,0 +1,76 @@
+﻿@model StreetViewModel
+@{
+    ViewData["Title"] = "Create street";
+}
+
+<h2>Create Street</h2>
+<form asp-action="Create" asp-controller="Street" method="post">
+    <div class="form-group">
+        <label asp-for="Street.Id"></label>
+        <input asp-for="Street.Id" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="Street.Name"></label>
+        <input asp-for="Street.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Country</label>
+        <select asp-for="SelectedCountry" asp-items="@Model.Countries" class="form-control" onchange="LoadRegions();"></select>
+    </div>
+    <div class="form-group">
+        <label>Region</label>
+        <select asp-for="SelectedRegion" asp-items="@Model.Regions" class="form-control" onchange="LoadCities();"></select>
+    </div>
+    <div class="form-group">
+        <label>City</label>
+        <select asp-for="SelectedCity"  asp-items="@Model.Cities" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Street.Buildings"></label>
+        <input asp-for="Street.Buildings" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-default">Cancel</a>
+</form>
+<script>
+    function LoadRegions() {
+        var countryid = document.getElementById("SelectedCountry").value;
+        var regionUrl = `/City/RegionList?countryId=${countryid}`;
+        $.ajax({
+            url: regionUrl,
+
+            success: function (data) {
+                if (data != null) {
+                    var regions = JSON.parse(data);
+
+                    var regionList = document.getElementById("SelectedRegion");
+                    regionList.innerHTML = "";
+                    for (var i in regions) {
+                        regionList.appendChild(new Option(regions[i].Name, regions[i].Id));
+                    }
+                }
+            }
+        });
+    }
+
+    function LoadCities() {
+        var regionid = document.getElementById("SelectedRegion").value;
+        var regionUrl = `/City/CityList?regionId=${regionid}`;
+        $.ajax({
+            url: regionUrl,
+
+            success: function (data) {
+                if (data != null) {
+                    var cities = JSON.parse(data);
+
+                    var cityList = document.getElementById("SelectedCity");
+                    cityList.innerHTML = "";
+                    for (var i in cities) {
+                        cityList.appendChild(new Option(cities[i].Name, cities[i].Id));
+                    }
+                }
+            }
+        });
+    }
+</script>
+

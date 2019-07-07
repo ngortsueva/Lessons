@@ -13,7 +13,9 @@ namespace CountryWeb.Domain
         public DbSet<Country> Countries { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<City> Cities { get; set; }
-       
+        public DbSet<Street> Streets { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using CountryWeb.Domain;
 using CountryWeb.Models;
 
-
 namespace CountryWeb.Controllers
 {
     public class CountryController : Controller
@@ -60,7 +59,11 @@ namespace CountryWeb.Controllers
         {
             var country = db.Countries.FirstOrDefault(c => c.Id == Convert.ToInt32(id));
 
-            if (country != null) db.Countries.Remove(country);
+            if (country != null)
+            {
+                db.Countries.Remove(country);
+                db.SaveChanges();
+            }
 
             return RedirectToAction(nameof(Index));
         }

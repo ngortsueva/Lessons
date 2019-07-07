@@ -4,51 +4,22 @@ using CountryWeb.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CountryWeb.Migrations
 {
     [DbContext(typeof(CountryDb))]
-    partial class CountryDbModelSnapshot : ModelSnapshot
+    [Migration("20190707073122_Street")]
+    partial class Street
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CountryWeb.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Building");
-
-                    b.Property<int?>("CityId");
-
-                    b.Property<int?>("CountryId");
-
-                    b.Property<string>("Flat");
-
-                    b.Property<int?>("RegionId");
-
-                    b.Property<int?>("StreetId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("RegionId");
-
-                    b.HasIndex("StreetId");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("CountryWeb.Models.City", b =>
                 {
@@ -69,31 +40,6 @@ namespace CountryWeb.Migrations
                     b.HasIndex("RegionId");
 
                     b.ToTable("Cities");
-                });
-
-            modelBuilder.Entity("CountryWeb.Models.Contact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressId");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("OwnSiteUrl");
-
-                    b.Property<string>("Phone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("CountryWeb.Models.Country", b =>
@@ -132,8 +78,6 @@ namespace CountryWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Buildings");
-
                     b.Property<int?>("CityId");
 
                     b.Property<string>("Name");
@@ -145,25 +89,6 @@ namespace CountryWeb.Migrations
                     b.ToTable("Streets");
                 });
 
-            modelBuilder.Entity("CountryWeb.Models.Address", b =>
-                {
-                    b.HasOne("CountryWeb.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId");
-
-                    b.HasOne("CountryWeb.Models.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
-                    b.HasOne("CountryWeb.Models.Region", "Region")
-                        .WithMany()
-                        .HasForeignKey("RegionId");
-
-                    b.HasOne("CountryWeb.Models.Street", "Street")
-                        .WithMany()
-                        .HasForeignKey("StreetId");
-                });
-
             modelBuilder.Entity("CountryWeb.Models.City", b =>
                 {
                     b.HasOne("CountryWeb.Models.Country", "Country")
@@ -173,13 +98,6 @@ namespace CountryWeb.Migrations
                     b.HasOne("CountryWeb.Models.Region", "Region")
                         .WithMany("Cities")
                         .HasForeignKey("RegionId");
-                });
-
-            modelBuilder.Entity("CountryWeb.Models.Contact", b =>
-                {
-                    b.HasOne("CountryWeb.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("CountryWeb.Models.Region", b =>

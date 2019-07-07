@@ -4,14 +4,16 @@ using CountryWeb.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CountryWeb.Migrations
 {
     [DbContext(typeof(CountryDb))]
-    partial class CountryDbModelSnapshot : ModelSnapshot
+    [Migration("20190707074254_Contacts")]
+    partial class Contacts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +32,6 @@ namespace CountryWeb.Migrations
                     b.Property<int?>("CityId");
 
                     b.Property<int?>("CountryId");
-
-                    b.Property<string>("Flat");
 
                     b.Property<int?>("RegionId");
 

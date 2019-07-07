@@ -13,9 +13,7 @@ function start(){
     }
 
     initShaders();
-
     initBuffers();
-
     drawScene();
 }
 
@@ -48,6 +46,7 @@ function initShaders() {
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
 
+
     // Если создать шейдерную программу не удалось, вывести предупреждение
 
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
@@ -55,6 +54,9 @@ function initShaders() {
     }
 
     gl.useProgram(shaderProgram);
+
+    vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+    gl.enableVertexAttribArray(vertexColorAttribute);
 
     vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
     gl.enableVertexAttribArray(vertexPositionAttribute);
@@ -133,6 +135,9 @@ function drawScene() {
 
     loadIdentity();
     mvTranslate([-0.0, 0.0, -6.0]);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesColorBuffer);
+    gl.vertexAttribPointer(vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
     gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
