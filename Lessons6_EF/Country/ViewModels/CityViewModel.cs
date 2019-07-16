@@ -12,5 +12,7 @@ namespace CountryWeb.ViewModels
         public City City { get; set; }        
         public SelectList Countries { get; set; }
         public SelectList Regions { get; set; }
+        public int SelectedCountry { get; set; }
+        public int SelectedRegion { get; set; }
     }
 }

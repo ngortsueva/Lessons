@@ -75,8 +75,8 @@ namespace CountryWeb.Controllers
             if (ModelState.IsValid)
             {
                 City city = viewModel.City;
-                city.Country = db.Countries.FirstOrDefault(c => c.Id == city.Country.Id);
-                city.Region = db.Regions.FirstOrDefault(r => r.Id == city.Region.Id);  
+                city.Country = db.Countries.FirstOrDefault(c => c.Id == viewModel.SelectedCountry);
+                city.Region = db.Regions.FirstOrDefault(r => r.Id == viewModel.SelectedRegion);  
                 
                 db.Cities.Add(city);
                 db.SaveChanges();
@@ -102,7 +102,9 @@ namespace CountryWeb.Controllers
             var viewModel = new CityViewModel {
                 City = city,
                 Countries = countries,
-                Regions = regions,                
+                Regions = regions,  
+                SelectedCountry = city.Country.Id,
+                SelectedRegion = city.Region.Id
             };
                 
             return View(viewModel);
@@ -114,8 +116,8 @@ namespace CountryWeb.Controllers
             if (ModelState.IsValid)
             {
                 City city = viewModel.City;
-                city.Country = db.Countries.FirstOrDefault(c => c.Id == city.Country.Id);
-                city.Region = db.Regions.FirstOrDefault(r => r.Id == city.Region.Id);
+                city.Country = db.Countries.FirstOrDefault(c => c.Id == viewModel.SelectedCountry);
+                city.Region = db.Regions.FirstOrDefault(r => r.Id == viewModel.SelectedRegion);
 
                 db.Cities.Update(city);
                 db.SaveChanges();

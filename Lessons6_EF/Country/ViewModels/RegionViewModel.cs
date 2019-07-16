@@ -9,8 +9,8 @@ namespace CountryWeb.ViewModels
 {
     public class RegionViewModel
     {
-        public Region Region { get; set; }        
-        public int SelectedCountry { get; set; }
+        public Region Region { get; set; }                
         public SelectList Countries { get; set; }
+        public int SelectedCountry { get; set; }
     }
 }

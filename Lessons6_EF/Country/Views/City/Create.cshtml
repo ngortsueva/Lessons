@@ -15,34 +15,12 @@
     </div>
     <div class="form-group">
         <label>Country</label>
-        <select asp-for="City.Country.Id" asp-items="@Model.Countries" class="form-control" onchange="LoadRegions();"></select>
+        <select asp-for="SelectedCountry" asp-items="@Model.Countries" class="form-control" onchange="LoadRegions();"></select>
     </div>
     <div class="form-group">
         <label>Region</label>
-        <select asp-for="City.Region.Id" asp-items="@Model.Regions" class="form-control"></select>
+        <select asp-for="SelectedRegion" asp-items="@Model.Regions" class="form-control"></select>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-default">Cancel</a>
 </form>
-<script>
-    function LoadRegions() {
-        
-        var countryid = document.getElementById("City_Country_Id").value;
-        var regionUrl = `/City/RegionList?countryId=${countryid}`;
-        $.ajax({
-            url: regionUrl,
-            
-            success: function (data) {
-                if (data != null) {
-                    var regions = JSON.parse(data);
-
-                    var regionList = document.getElementById("City_Region_Id");
-                    regionList.innerHTML = "";
-                    for (var i in regions) {
-                        regionList.appendChild(new Option(regions[i].Name, regions[i].Id));
-                    }
-                }
-            }
-        });
-    }
-</script>

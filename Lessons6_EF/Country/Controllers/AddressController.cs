@@ -101,7 +101,7 @@ namespace CountryWeb.Controllers
                 .Select(c => new { Id = c.Id, Name = c.Name }).ToList(), "Id", "Name");
 
             var streets = new SelectList(db.Streets
-                .Where(s => s.City.Id == address.Street.Id)
+                .Where(s => s.City.Id == address.City.Id)
                 .Select(c => new { Id = c.Id, Name = c.Name }).ToList(), "Id", "Name");
 
             var viewModel = new AddressViewModel
@@ -125,7 +125,16 @@ namespace CountryWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                var address = viewModel.Address;
+                address.Country = db.Countries.FirstOrDefault(c => c.Id == viewModel.SelectedCountry);
+                address.Region = db.Regions.FirstOrDefault(r => r.Id == viewModel.SelectedRegion);
+                address.City = db.Cities.FirstOrDefault(c => c.Id == viewModel.SelectedCity);
+                address.Street = db.Streets.FirstOrDefault(s => s.Id == viewModel.SelectedStreet);
 
+                db.Addresses.Update(address);
+                db.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);

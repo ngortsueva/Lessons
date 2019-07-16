@@ -1,5 +1,7 @@
 var gl;
 
+var squareRotation = 0.0;
+
 function start(){
     var canvas = document.getElementById("glcanvas");
 
@@ -10,6 +12,7 @@ function start(){
       gl.enable(gl.DEPTH_TEST);
       gl.depthFunc(gl.LEQUAL);
       gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+      gl.viewport(0, 0, canvas.width, canvas.height);
     }
 
     initShaders();

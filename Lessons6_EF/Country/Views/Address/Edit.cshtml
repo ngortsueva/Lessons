@@ -11,14 +11,6 @@
         <input asp-for="Address.Id" class="form-control" disabled />
     </div>
     <div class="form-group">
-        <label asp-for="Address.Building"></label>
-        <input asp-for="Address.Building" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Address.Flat"></label>
-        <input asp-for="Address.Flat" class="form-control" />
-    </div>
-    <div class="form-group">
         <label>Country</label>
         <select asp-for="SelectedCountry" asp-items="@Model.Countries" class="form-control" onchange="LoadRegions();"></select>
     </div>
@@ -31,74 +23,17 @@
         <select asp-for="SelectedCity" asp-items="@Model.Cities" class="form-control" onchange="LoadStreets();"></select>
     </div>
     <div class="form-group">
-        <label>City</label>
+        <label>Street</label>
         <select asp-for="SelectedStreet" asp-items="@Model.Streets" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.Building"></label>
+        <input asp-for="Address.Building" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.Flat"></label>
+        <input asp-for="Address.Flat" class="form-control" />
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="Index" class="btn btn-default">Cancel</a>
 </form>
-<script>
-    function LoadRegions(event) {
-        var countryid = event.target.value;
-        //var countryid = document.getElementById("SelectedCountry").value;
-        var regionUrl = `/City/RegionList?countryId=${countryid}`;
-        $.ajax({
-            url: regionUrl,
-
-            success: function (data) {
-                if (data != null) {
-                    var regions = JSON.parse(data);
-
-                    var regionList = document.getElementById("SelectedRegion");
-                    regionList.innerHTML = "";
-
-                    for (var i in regions) {
-                        regionList.appendChild(new Option(regions[i].Name, regions[i].Id));
-                    }
-                    LoadCities();
-                }
-            }
-        });
-    }
-
-    function LoadCities() {
-        var regionid = document.getElementById("SelectedRegion").value;
-        var regionUrl = `/City/CityList?regionId=${regionid}`;
-        $.ajax({
-            url: regionUrl,
-
-            success: function (data) {
-                if (data != null) {
-                    var cities = JSON.parse(data);
-
-                    var cityList = document.getElementById("SelectedCity");
-                    cityList.innerHTML = "";
-                    for (var i in cities) {
-                        cityList.appendChild(new Option(cities[i].Name, cities[i].Id));
-                    }
-                    LoadStreets();
-                }
-            }
-        });
-    }
-
-    function LoadStreets() {
-        var cityid = document.getElementById("SelectedCity").value;
-        var cityUrl = `/City/StreetList?cityId=${cityid}`;
-        $.ajax({
-            url: cityUrl,
-            success: function (data) {
-                if (data != null) {
-                    var streets = JSON.parse(data);
-                    var streetList = document.getElementById("SelectedStreet");
-
-                    streetList.innerHTML = "";
-
-                    for (var i in streets) {
-                        streetList.appendChild(new Option(streets[i].Name, streets[i].Id));
-                    }
-                }
-            }
-        });
-    }
-</script>
