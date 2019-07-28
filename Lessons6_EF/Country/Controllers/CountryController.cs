@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using CountryWeb.Domain;
 using CountryWeb.Models;
+using CountryWeb.ViewModels;
 
 namespace CountryWeb.Controllers
 {
@@ -21,38 +24,54 @@ namespace CountryWeb.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var continents = new SelectList(db.Continents.Select(c => new { Id = c.Id, Name = c.Name }).ToList(), "Id", "Name");
+            var viewModel = new CountryViewModel
+            {
+                Continents = continents
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Country country)
+        public IActionResult Create(CountryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Add(country);
+                db.Countries.Add(viewModel.Country);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(viewModel);
         }
 
         public IActionResult Edit(string id)
         {
-            var country = db.Countries.FirstOrDefault(c => c.Id == Convert.ToInt32(id));
+            var continents = new SelectList(db.Continents.Select(c => new { Id = c.Id, Name = c.Name }).ToList(), "Id", "Name");
 
-            return View(country);
+            var country = db.Countries
+                                .Include(c => c.Continent)
+                                .FirstOrDefault(c => c.Id == Convert.ToInt32(id));
+
+            var viewModel = new CountryViewModel
+            {
+                Continents = continents,
+                Country = country,
+                SelectedContinent = country.Continent?.Id
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(Country country)
+        public IActionResult Edit(CountryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Update(country);
+                viewModel.Country.Continent = db.Continents.FirstOrDefault(c => c.Id == viewModel.SelectedContinent);
+                db.Countries.Update(viewModel.Country);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(viewModel);
         }
 
         public IActionResult Delete(string id)

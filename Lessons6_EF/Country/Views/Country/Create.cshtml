@@ -1,4 +1,4 @@
-﻿@model  CountryWeb.Models.Country
+﻿@model  CountryViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -6,12 +6,16 @@
 <h2>Create Country</h2>
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="Id"></label>
-        <input asp-for="Id" class="form-control" disabled/>
+        <label asp-for="Country.Id"></label>
+        <input asp-for="Country.Id" class="form-control" disabled />
     </div>
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control"/>
+        <label>Country</label>
+        <select asp-for="SelectedContinent" asp-items="@Model.Continents" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Country.Name"></label>
+        <input asp-for="Country.Name" class="form-control" />
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-default">Cancel</a>

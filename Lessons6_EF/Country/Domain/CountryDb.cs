@@ -10,6 +10,7 @@ namespace CountryWeb.Domain
     public class CountryDb : DbContext
     {
         public CountryDb(DbContextOptions<CountryDb> options) : base(options) { }
+        public DbSet<Continent> Continents { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<City> Cities { get; set; }

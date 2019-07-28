@@ -53,7 +53,7 @@ namespace CountryWeb.Controllers
 
         public IActionResult Edit(string id)
         {
-            var region = db.Regions
+            var region = db.Regions                            
                             .Include(r => r.Country) 
                             .FirstOrDefault(r => r.Id == Convert.ToInt32(id));
 
