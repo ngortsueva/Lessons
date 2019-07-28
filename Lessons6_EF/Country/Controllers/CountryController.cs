@@ -39,7 +39,7 @@ namespace CountryWeb.Controllers
             {
                 db.Countries.Add(viewModel.Country);
                 db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Continent");
             }
             return View(viewModel);
         }

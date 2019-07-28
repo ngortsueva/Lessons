@@ -1,36 +1,23 @@
-﻿@model  IEnumerable<CountryWeb.Models.Continent>
+﻿@model IEnumerable<CountryWeb.Models.Continent>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
-    <div class="col">
-        <h2>Coutries</h2>
-        <table class="table table-striped">
-            <tr><th>Id</th><th>Name</th><th></th><th></th></tr>
-            @if (Model.Count() == 0)
-            {
-                <tr><td colspan="3" class="text-center">No Continents</td></tr>
-            }
-            else
-            {
-                foreach (var continent in Model)
-                {
-                    <tr>
-                        <td>@continent.Id</td>
-                        <td>@continent.Name</td>                        
-                        <td>
-                            <form asp-action="Delete" asp-route-id="@continent.Id" method="post">
-                                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@continent.Id">Edit</a>
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            }
-        </table>
-        <a class="btn btn-primary" asp-action="Create">Create</a>
+<link rel="stylesheet" href="~/css/nav-left.css" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <h3><a href="">Continents</a></h3>
+            <ul class="nav nav-sidebar">
+                <li><a asp-controller="Continent" asp-action="Index" asp-route-id="All">All</a></li>
+                <vc:continent-list></vc:continent-list>
+            </ul>
+            <a class="btn btn-primary" asp-action="Create">Create</a>
+        </div>
+        <div class="col-sm-9 main">            
+            <vc:country-table continent-id="@ViewBag.SelectedContinent"></vc:country-table>
+        </div>
     </div>
 </div>
-

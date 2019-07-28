@@ -18,8 +18,9 @@ namespace CountryWeb.Controllers
 
         public ContinentController(CountryDb injectDb) { db = injectDb; }
 
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
+            ViewBag.SelectedContinent = id;
             return View(db.Continents);
         }
 

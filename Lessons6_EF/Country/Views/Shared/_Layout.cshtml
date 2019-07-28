@@ -18,21 +18,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Country</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CountryWeb</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Continent" asp-action="Index">Continents</a></li>
+                    <li><a asp-area="" asp-controller="Continent" asp-action="Index" asp-route-id="All">Continents</a></li>
+                    <!--
                     <li><a asp-area="" asp-controller="Country" asp-action="Index">Countries</a></li>
                     <li><a asp-area="" asp-controller="Region" asp-action="Index">Regions</a></li>
                     <li><a asp-area="" asp-controller="City" asp-action="Index">Cities</a></li>
                     <li><a asp-area="" asp-controller="Street" asp-action="Index">Streets</a></li>
                     <li><a asp-area="" asp-controller="Address" asp-action="Index">Addresses</a></li>
+                    -->
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>    
 
     <partial name="_CookieConsentPartial" />
 
