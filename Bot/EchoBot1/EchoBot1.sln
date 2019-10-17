@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EchoBot1", "EchoBot1.csproj", "{184E173F-933E-4835-BE19-224F402F86AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot2Welcome", "..\Bot2Welcome\Bot2Welcome.csproj", "{A1E9C377-D635-4A46-9E9A-D2D569B00A59}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot05MultiTurnPrompt", "..\Bot05_Multi-turn-prompt\Bot05MultiTurnPrompt.csproj", "{3DA252A2-7898-4D43-8F6F-482A696819E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot06UsingCard", "..\Bot06UsingCard\Bot06UsingCard.csproj", "{1BE73628-9B00-4E41-96C5-5D0ADBFC19C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{184E173F-933E-4835-BE19-224F402F86AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{184E173F-933E-4835-BE19-224F402F86AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{184E173F-933E-4835-BE19-224F402F86AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{184E173F-933E-4835-BE19-224F402F86AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1E9C377-D635-4A46-9E9A-D2D569B00A59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1E9C377-D635-4A46-9E9A-D2D569B00A59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1E9C377-D635-4A46-9E9A-D2D569B00A59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1E9C377-D635-4A46-9E9A-D2D569B00A59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA252A2-7898-4D43-8F6F-482A696819E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA252A2-7898-4D43-8F6F-482A696819E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA252A2-7898-4D43-8F6F-482A696819E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA252A2-7898-4D43-8F6F-482A696819E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BE73628-9B00-4E41-96C5-5D0ADBFC19C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BE73628-9B00-4E41-96C5-5D0ADBFC19C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BE73628-9B00-4E41-96C5-5D0ADBFC19C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BE73628-9B00-4E41-96C5-5D0ADBFC19C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC1FA085-7B1B-4AF8-A58A-6E70AB29513F}
+	EndGlobalSection
+EndGlobal
