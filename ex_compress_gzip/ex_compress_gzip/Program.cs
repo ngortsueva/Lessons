@@ -10,43 +10,48 @@ namespace ex_compress_gzip
     {
         public byte[] data;
         public int data_size;
-        public int file_offset;
         public bool data_compressed;
     }
 
-    class CompressFile
+    public class CompressFile
     {
         private readonly object offsetReadLock = new object();
         private readonly object offsetWriteLock = new object();
         private readonly object compressLock = new object();
         private readonly object decompressLock = new object();
-        private int offsetRead;
-        private int offsetWrite;
+        private int offsetReadIndex;
+        private int offsetWriteIndex;
         private int compressIndex;
         private int decompressIndex;
+        bool compressed = false;
 
         private const int size = 1024 * 1014;
-        private string filename;
-        private string filename2;
+        private string filename;        
         private long fileSize;
+        private long file_offset;
         private int blockCounts;
         private int readBlockCount = 5;
         private List<FileBlock> blocks;
 
-        public CompressFile(string filename, string filename2)
-        {
-            this.filename = filename;
-            this.filename2 = filename2;
+        public CompressFile()
+        {                        
             blocks = new List<FileBlock>();
 
-            offsetRead = 0;
-            offsetWrite = 0;
+            offsetReadIndex = 0;
+            offsetWriteIndex = 0;
             compressIndex = 0;
+            decompressIndex = 0;
+            file_offset = 0;
         }
 
-        public void start_compress()
+        public int Count
         {
-            prepare();
+            get { return blocks.Count; }
+        }
+
+        public void start_compress(string filename)
+        {
+            prepare(filename);
 
             Thread tread1 = new Thread(new ThreadStart(read));
             Thread tcompres1 = new Thread(new ThreadStart(compress));
@@ -54,77 +59,107 @@ namespace ex_compress_gzip
 
             tread1.Start();
             tcompres1.Start();
-            twrite1.Start();
+            twrite1.Start();            
         }
 
-        public void start_decompress()
+        public void start_decompress(string filename)
         {
-            prepare();
+            prepare(filename);
 
             Thread tread1 = new Thread(new ThreadStart(read));
-            //Thread tcompres1 = new Thread(new ThreadStart(decompress));
-            Thread twrite1 = new Thread(new ThreadStart(write));
+            Thread tdecompres1 = new Thread(new ThreadStart(decompress));
+            //Thread twrite1 = new Thread(new ThreadStart(write_decompressed));
+
+            tread1.Start();
+            tdecompres1.Start();
+            //twrite1.Start();
         }
 
-        public void prepare()
+        public void prepare(string filename)
         {
+            clear();
+
+            this.filename = filename;
+
             FileInfo fileInfo = new FileInfo(filename);
 
             fileSize = fileInfo.Length;
 
-            blockCounts = (int)fileInfo.Length / size;   // размер файла - кол-во блоков в 1MB            
+            blockCounts = (int)fileInfo.Length / size;   // размер файла - кол-во блоков в 1MB       
+        }
+
+        public void clear()
+        {
+            blocks.Clear();
+            compressIndex = 0;
+            offsetReadIndex = 0;
+            offsetWriteIndex = 0;
+            decompressIndex = 0;
+            file_offset = 0;
         }
 
         public void read()
         {
+            file_offset = 0;
+
             Console.WriteLine("Start read file");
 
-            byte[] buffer = new byte[size];
+            byte[] buffer;
 
-            while (offsetRead <= blockCounts)
+            while (file_offset < fileSize)
             {
                 lock (offsetReadLock)
                 {                   
                     using (FileStream fileRead = new FileStream(filename, FileMode.Open, FileAccess.Read))
                     {
-                        int r = fileRead.Read(buffer, offsetRead*size, size);
-                        
+                        buffer = new byte[size];
+
+                        fileRead.Seek(file_offset, SeekOrigin.Begin);
+
+                        int r = fileRead.Read(buffer, 0, size);
+
+                        file_offset += r-1;
+
                         lock (compressLock)
                         {
                             blocks.Add(new FileBlock()
                             {
                                 data = buffer,
-                                data_size = r,
-                                file_offset = offsetRead * size
+                                data_size = r
                             });
                         }
-                    }
-                    offsetRead++;
+                    }                    
                 }
             }
         }
 
         public void write()
         {
-            Console.WriteLine("Start write file");
+            file_offset = 0;
 
-            byte[] buffer = new byte[size];
+            string filename2 = Path.GetFileName(filename) + ".copy";
 
-            while (offsetWrite <= blockCounts)
+            Console.WriteLine("Start write file");            
+
+            while (offsetWriteIndex < blocks.Count)
             {
                 lock (offsetWriteLock)
                 {
                     if (blocks.Count == 0) continue;
 
-                    if (offsetWrite <= blocks.Count && blocks[offsetWrite].data_compressed)
+                    if (offsetWriteIndex < blocks.Count)
                     {
                         using (FileStream fileWrite = new FileStream(filename2, FileMode.OpenOrCreate, FileAccess.Write))
                         {
-                            fileWrite.Write(blocks[offsetWrite].data, blocks[offsetWrite].file_offset, blocks[offsetWrite].data_size);
+                            fileWrite.Seek(file_offset, SeekOrigin.Begin);
 
-                            blocks[offsetWrite].data = null;
+                            fileWrite.Write(blocks[offsetWriteIndex].data, 0, blocks[offsetWriteIndex].data_size);
+
+                            file_offset += blocks[offsetWriteIndex].data_size;
+
+                            //blocks[offsetWriteIndex].data = null;
                         }
-                        offsetWrite++;
+                        offsetWriteIndex++;
                     }
                 }
             }            
@@ -132,45 +167,64 @@ namespace ex_compress_gzip
 
         public void compress()
         {
-            Console.WriteLine("Start compress file");
+            file_offset = 0;
 
-            while (compressIndex <= blockCounts)
+            string filename2 = Path.GetFileName(filename) + ".gzip";
+
+            while (compressIndex < blocks.Count)
             {
                 lock (compressLock)
-                {
-                    if (blocks.Count == 0) continue;
-
-                    if (compressIndex <= blocks.Count)
+                {                    
+                    using (FileStream fileWrite = new FileStream(filename2, FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        using (MemoryStream blockInMemory = new MemoryStream(blocks[compressIndex].data))
-                        {
-                            using (GZipStream gzip = new GZipStream(blockInMemory, CompressionMode.Compress, true))
-                            {
-                                gzip.Write(blocks[compressIndex].data, 0, blocks[compressIndex].data_size);
+                        fileWrite.Seek(file_offset, SeekOrigin.Begin);
 
-                                blocks[compressIndex].data_compressed = true;
-                            }
+                        var memory = new MemoryStream(new byte[size+1024]);
+
+                        using (GZipStream gzip = new GZipStream(memory, CompressionMode.Compress))
+                        {
+                            gzip.Write(blocks[compressIndex].data, 0, blocks[compressIndex].data_size);
+
+                            file_offset += memory.Length;
                         }
-                        compressIndex++;
                     }
+                    compressIndex++;                    
                 }
             }
         }
 
         public void decompress()
         {
-            while (decompressIndex <= blockCounts)
+            int r = 0;
+
+            file_offset = 0;
+
+            byte[] buffer = new byte[size];
+
+            string filename2 = Path.GetFileNameWithoutExtension(filename) + ".unzip";
+
+            while (decompressIndex < blocks.Count)
             {
                 lock (decompressLock)
                 {
-                    using (MemoryStream blockInMemory = new MemoryStream(blocks[decompressIndex].data))
+                    
+                    using (FileStream fileWrite = new FileStream(filename2, FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        using (GZipStream gzip = new GZipStream(blockInMemory, CompressionMode.Decompress, true))
+                        var memory = new MemoryStream(blocks[decompressIndex].data);
+
+                        using (GZipStream gzip = new GZipStream(memory, CompressionMode.Decompress))
                         {
-                            gzip.Write(blocks[decompressIndex].data, 0, blocks[decompressIndex].data_size);
+                            r = gzip.Read(buffer, 0, size);
+
+                            fileWrite.Seek(file_offset, SeekOrigin.Begin);
+
+                            fileWrite.Write(buffer, 0, r);
+
+                            file_offset += r;
                         }
                     }
                     decompressIndex++;
+                    
                 }
             }
         }
@@ -180,27 +234,25 @@ namespace ex_compress_gzip
     {
         static void Main(string[] args)
         {
-            string filename1 = "Task.txt";
-            string filename2 = "Task_copy.txt";
+            //string filename1 = "Test1.txt";
+            //string filename1 = "Test2.txt";
+            //string filename1 = "Test3.fb2";
+            string filename1 = "Test4.fb2";
 
-            CompressFile compress = new CompressFile(filename1, filename2);
+            string filename2 = $"{filename1}.gzip";
 
-            Console.WriteLine("Read file");
-
-            compress.start_compress();
-
-            /*
+            CompressFile compress = new CompressFile();
+            
+            Console.WriteLine("Compress file");
+            compress.prepare(filename1);
             compress.read();
-
-            Console.WriteLine("End.");
-
-            Console.WriteLine("Write file");
-
             compress.write();
-
-            Console.WriteLine("End.");
-            */
-            //Console.ReadLine();
+            compress.compress();
+            
+            Console.WriteLine("Deompress file");
+            compress.prepare(filename2);
+            compress.read();
+            compress.decompress();
         }
     }
 }
